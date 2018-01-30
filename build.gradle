@@ -110,6 +110,10 @@ subprojects { project ->
         }
     }
 
+    tasks.withType(Test) {
+        maxParallelForks = Runtime.runtime.availableProcessors()
+    }
+
     build.dependsOn ':detekt'
 
     sourceCompatibility = javaVersion
