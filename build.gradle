@@ -110,7 +110,7 @@ subprojects { project ->
         }
     }
 
-    build.dependsOn ':detekt'
+//    build.dependsOn ':detekt'
 
     sourceCompatibility = javaVersion
     targetCompatibility = javaVersion

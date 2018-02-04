@@ -2,13 +2,13 @@ package arrow.ap.tests
 
 import arrow.optics.OptikalProcessor
 
-class OptionalTest: APTest() {
+class OpticsTest: APTest() {
 
     init {
 
         testProcessor(AnnotationProcessor(
                 name = "@optionals test",
-                sourceFile = "Optional.java",
+                sourceFile = "OptionalOptics.java",
                 destFiles = listOf("Optional.kt"),
                 processor = OptikalProcessor()
         ))

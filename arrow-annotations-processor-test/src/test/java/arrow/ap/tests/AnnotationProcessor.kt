@@ -5,7 +5,7 @@ import javax.annotation.processing.Processor
 data class AnnotationProcessor(
         val name: String,
         val sourceFile: String,
-        val destFile: String? = null,
+        val destFiles: List<String> = listOf(),
         val processor: Processor,
         val errorMessage: String? = null
 )
