@@ -8,6 +8,12 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
     compile "io.kotlintest:kotlintest:$kotlinTestVersion"
+
+    compile project(":arrow-annotations")
+    kapt project(":arrow-annotations-processor")
+    kaptTest project(":arrow-annotations-processor")
 }
+
+apply plugin: 'kotlin-kapt'
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
