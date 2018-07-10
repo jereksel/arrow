@@ -1,0 +1,38 @@
+dependencies {
+    compile project(':arrow-annotations')
+    compile project(':arrow-core')
+    compile project(':arrow-data')
+    compile project(':arrow-free')
+    compile project(':arrow-generic')
+    compile project(':arrow-instances-core')
+    compile project(':arrow-instances-data')
+    compile project(':arrow-kindedj')
+    compile project(':arrow-mtl')
+    compile project(':arrow-syntax')
+    compile project(':arrow-typeclasses')
+    compile project(':arrow-validation')
+
+    compile project(':arrow-dagger')
+    compile project(':arrow-dagger-effects')
+    compile project(':arrow-dagger-effects-kotlinx-coroutines')
+    compile project(':arrow-dagger-effects-rx2')
+
+    compile project(':arrow-effects')
+    compile project(':arrow-effects-kotlinx-coroutines')
+    compile project(':arrow-effects-reactor')
+    compile project(':arrow-effects-rx2')
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+//    testCompile "io.kotlintest:kotlintest:$kotlinTestVersion"
+//    testCompile project(':arrow-test')
+
+//    compile project(':arrow-annotations')
+//    kapt project(':arrow-annotations-processor')
+//    kaptTest project(':arrow-annotations-processor')
+
+    compile group: 'com.google.guava', name: 'guava', version: '25.1-jre'
+    compile "org.jetbrains.kotlin:kotlin-reflect:1.2.51"
+}
+
+apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
+
+apply plugin: 'kotlin-kapt'

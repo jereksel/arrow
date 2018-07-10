@@ -75,7 +75,7 @@ Add the dependencies into the project's `build.gradle`
 
 ```groovy
 apply plugin: 'kotlin-kapt' //optional
-apply from: rootProject.file('gradle/generated-kotlin-sources.gradle') //optional
+  //optional
 
 def arrow_version = "0.7.2"
 dependencies {
