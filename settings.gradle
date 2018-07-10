@@ -32,8 +32,12 @@ apply plugin: 'ch.tutteli.settings'
 include(':arrow-annotations-processor-test-models')
 project(':arrow-annotations-processor-test-models').projectDir = new File('modules/core/arrow-annotations-processor/models')
 
+include(":android")
+project(':android').projectDir = new File('android/app')
+
 //noinspection GroovyAssignabilityCheck
 include {
+
     modules {
 
         core {
