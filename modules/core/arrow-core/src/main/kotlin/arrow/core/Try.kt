@@ -1,7 +1,6 @@
 package arrow.core
 
 import arrow.higherkind
-import arrow.legacy.Disjunction
 
 typealias Failure<A> = Try.Failure<A>
 typealias Success<A> = Try.Success<A>
@@ -44,9 +43,6 @@ sealed class Try<out A> : TryOf<A> {
     fun <A> raise(e: Throwable): Try<A> = Failure(e)
 
   }
-
-  @Deprecated(DeprecatedUnsafeAccess, ReplaceWith("getOrElse { ifEmpty }"))
-  operator fun invoke() = get()
 
   fun <B> ap(ff: TryOf<(A) -> B>): Try<B> = ff.fix().flatMap { f -> map(f) }.fix()
 
@@ -92,43 +88,11 @@ sealed class Try<out A> : TryOf<A> {
 
   abstract fun isSuccess(): Boolean
 
-  @Deprecated(DeprecatedUnsafeAccess, ReplaceWith("fold({ Unit }, f)"))
-  fun foreach(f: (A) -> Unit) {
-    if (isSuccess()) f(get())
-  }
-
-  @Deprecated(DeprecatedUnsafeAccess, ReplaceWith("map { f(it); it }"))
-  fun onEach(f: (A) -> Unit): Try<A> = map {
-    f(it)
-    it
-  }
-
   fun exists(predicate: Predicate<A>): Boolean = fold({ false }, { predicate(it) })
-
-  @Deprecated(DeprecatedUnsafeAccess, ReplaceWith("getOrElse { ifEmpty }"))
-  abstract fun get(): A
-
-  @Deprecated(DeprecatedUnsafeAccess, ReplaceWith("map { body(it); it }"))
-  fun onSuccess(body: (A) -> Unit): Try<A> {
-    foreach(body)
-    return this
-  }
-
-  @Deprecated(DeprecatedUnsafeAccess, ReplaceWith("fold ({ Try { body(it); it }}, { Try.just(it) })"))
-  fun onFailure(body: (Throwable) -> Unit): Try<A> = when (this) {
-    is Success -> this
-    is Failure -> {
-      body(exception)
-      this
-    }
-  }
 
   fun toOption(): Option<A> = fold({ None }, { Some(it) })
 
   fun toEither(): Either<Throwable, A> = fold({ Left(it) }, { Right(it) })
-
-  @Deprecated("arrow.data.Either is already right biased. This function will be removed in future releases", ReplaceWith("toEither()"))
-  fun toDisjunction(): Disjunction<Throwable, A> = toEither().toDisjunction()
 
   fun <B> foldLeft(initial: B, operation: (B, A) -> B): B = this.fix().fold({ initial }, { operation(initial, it) })
 
@@ -141,10 +105,6 @@ sealed class Try<out A> : TryOf<A> {
     override fun isFailure(): Boolean = true
 
     override fun isSuccess(): Boolean = false
-
-    override fun get(): A {
-      throw exception
-    }
   }
 
   /**
@@ -154,8 +114,6 @@ sealed class Try<out A> : TryOf<A> {
     override fun isFailure(): Boolean = false
 
     override fun isSuccess(): Boolean = true
-
-    override fun get(): A = value
   }
 }
 

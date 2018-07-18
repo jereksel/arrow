@@ -51,9 +51,6 @@ sealed class Option<out A> : OptionOf<A> {
    */
   fun isDefined(): Boolean = !isEmpty()
 
-  @Deprecated(DeprecatedUnsafeAccess, ReplaceWith("getOrElse { ifEmpty }"))
-  abstract fun get(): A
-
   fun orNull(): A? = fold({ null }, ::identity)
 
   /**
@@ -68,10 +65,9 @@ sealed class Option<out A> : OptionOf<A> {
    */
   inline fun <B> map(crossinline f: (A) -> B): Option<B> = fold({ None }, { a -> Some(f(a)) })
 
-  inline fun <P1, R> map(p1: Option<P1>, crossinline f: (A, P1) -> R): Option<R> = if (isEmpty()) {
-    None
-  } else {
-    p1.map { pp1 -> f(get(), pp1) }
+  inline fun <P1, R> map(p1: Option<P1>, crossinline f: (A, P1) -> R): Option<R> = when (this) {
+    is None -> None
+    is Some<A> -> p1.map { f(t, it) }
   }
 
   inline fun <R> fold(ifEmpty: () -> R, ifSome: (A) -> R): R = when (this) {
@@ -127,11 +123,6 @@ sealed class Option<out A> : OptionOf<A> {
    */
   inline fun forall(crossinline p: Predicate<A>): Boolean = fold({ true }, p)
 
-  @Deprecated(DeprecatedUnsafeAccess, ReplaceWith("fold({ Unit }, f)"))
-  inline fun forEach(f: (A) -> Unit) {
-    if (nonEmpty()) f(get())
-  }
-
   fun <B> foldLeft(initial: B, operation: (B, A) -> B): B =
     this.fix().let { option ->
       when (option) {
@@ -161,16 +152,12 @@ sealed class Option<out A> : OptionOf<A> {
 }
 
 object None : Option<Nothing>() {
-  override fun get() = throw NoSuchElementException("None.get")
-
   override fun isEmpty() = true
 
   override fun toString(): String = "None"
 }
 
 data class Some<out T>(val t: T) : Option<T>() {
-  override fun get() = t
-
   override fun isEmpty() = false
 
   override fun toString(): String = "Some($t)"
