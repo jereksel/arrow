@@ -16,5 +16,4 @@ dependencies {
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
 }
 
-
 apply plugin: 'kotlin-kapt'

@@ -11,5 +11,4 @@ dependencies {
 }
 
 apply from: rootProject.file('gradle/gradle-mvn-push.gradle')
-
 apply plugin: 'kotlin-kapt'
