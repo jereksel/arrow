@@ -291,31 +291,19 @@ class TryTest : UnitSpec() {
       (failure.filter { it > 5 }.isSuccess()) shouldBe false
     }
 
-    "rescue" {
-      success.rescue { Success(5) }.get() shouldBe 10
-      failure.rescue { Success(5) }.get() shouldBe 5
+    "recoverWith" {
+      success.recoverWith { Success(5) }.orNull() shouldBe 10
+      failure.recoverWith { Success(5) }.orNull() shouldBe 5
     }
 
-    "handle" {
-      success.handle { 5 }.get() shouldBe 10
-      failure.handle { 5 }.get() shouldBe 5
-    }
-
-    "onSuccessAndOnFailure" {
-      success.onSuccess { it shouldBe 10 }
-        .onFailure { fail("") }
-      failure.onSuccess { fail("") }
-        .onFailure { }
+    "recover" {
+      success.recover { 5 }.orNull() shouldBe 10
+      failure.recover { 5 }.orNull() shouldBe 5
     }
 
     "toOption" {
       (success.toOption().isDefined()) shouldBe true
       (failure.toOption().isEmpty()) shouldBe true
-    }
-
-    "toDisjunction" {
-      (success.toDisjunction().isRight()) shouldBe true
-      (failure.toDisjunction().isLeft()) shouldBe true
     }
 
     "failed" {

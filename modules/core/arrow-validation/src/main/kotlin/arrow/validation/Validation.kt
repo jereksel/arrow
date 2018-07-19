@@ -4,7 +4,7 @@ import arrow.core.Either
 
 class Validation<out E : Any>(vararg disjunctionSequence: Either<E, *>) {
 
-  val failures: List<E> = disjunctionSequence.filter { it.isLeft() }.map { it.swap().get() }
+  val failures: List<E> = disjunctionSequence.mapNotNull { it.swap() as? Either.Right<E> }.map { it.b }
 
   val hasFailures: Boolean = failures.isNotEmpty()
 
@@ -493,3 +493,4 @@ fun <L : Any, R : Any, R1 : Any, R2 : Any, R3 : Any, R4 : Any, R5 : Any, R6 : An
   }
 }
 
+private fun <A, B> Either<A, B>.get(): B = (this as Either.Right<B>).b

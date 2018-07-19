@@ -152,17 +152,11 @@ fun <B, A : B> TryOf<A>.orElse(f: () -> TryOf<B>): Try<B> = when (this.fix()) {
  */
 fun <B> TryOf<B>.recoverWith(f: (Throwable) -> TryOf<B>): Try<B> = fix().fold({ f(it).fix() }, { Success(it) })
 
-@Deprecated(DeprecatedAmbiguity, ReplaceWith("recoverWith(f)"))
-fun <A> TryOf<A>.rescue(f: (Throwable) -> TryOf<A>): Try<A> = fix().recoverWith(f)
-
 /**
  * Applies the given function `f` if this is a `Failure`, otherwise returns this if this is a `Success`.
  * This is like map for the exception.
  */
 fun <B> TryOf<B>.recover(f: (Throwable) -> B): Try<B> = fix().fold({ Success(f(it)) }, { Success(it) })
-
-@Deprecated(DeprecatedAmbiguity, ReplaceWith("recover(f)"))
-fun <A> TryOf<A>.handle(f: (Throwable) -> A): Try<A> = fix().recover(f)
 
 /**
  * Completes this `Try` by applying the function `ifFailure` to this if this is of type `Failure`,
